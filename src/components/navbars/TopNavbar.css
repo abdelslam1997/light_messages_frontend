@@ -1,0 +1,22 @@
+.language-box {
+    position: absolute !important;
+    right: 5px !important;
+}
+
+.nav-link:hover {
+    color: #278cf7;
+    transition: color 0.3s;
+}
+
+.language-box button:hover {
+    background-color: #278cf7;
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+    .language-box {
+        position: relative !important;
+        right: 0 !important;
+    }
+    
+}
