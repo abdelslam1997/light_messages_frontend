@@ -5,12 +5,15 @@ import { useState } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../contexts/UserContext';
+import { getCurrentUser } from '../../services/userService';
 
 const LoginPage = () => {
 
     const navigate = useNavigate();
 
     const { t } = useTranslation();
+    const { updateUser } = useUser();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -29,7 +32,8 @@ const LoginPage = () => {
         console.log('Form submitted:', formData);
         try {
             const response = await loginUser(formData);
-            console.log('Login response:', response);
+            const userData = await getCurrentUser();
+            updateUser(userData);
             toast.success(t('login_success'));
             navigate('/');
 

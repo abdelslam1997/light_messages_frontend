@@ -1,4 +1,6 @@
 {
+  "logout_success": "تم تسجيل الخروج بنجاح",
+  "logout": "تسجيل الخروج",
   "home": "الرئيسية",
   "register": "التسجيل",
   "login": "تسجيل الدخول",
@@ -18,6 +20,7 @@
   "confirm_password_required": "تأكيد كلمة المرور مطلوب",
   "passwords_dont_match": "كلمات المرور غير متطابقة",
   "profile_image_required": "الصورة الشخصية مطلوبة",
+  "registration_success": "تم التسجيل بنجاح",
   "join_us_now": "انضم إلينا الآن",
   "first_name": "الاسم الأول",
   "last_name": "اسم العائلة",

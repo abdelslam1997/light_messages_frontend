@@ -3,9 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { FaEnvelope, FaImage, FaLock, FaPaperPlane, FaUser } from "react-icons/fa";
 import { useState } from "react";
 import { registerUser } from "../../services/authService";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
     const { t } = useTranslation();
+    const Navigate = useNavigate();
+    
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -53,6 +57,8 @@ const RegisterPage = () => {
             console.log('Form submitted:', formData);
             const response = await registerUser(formData);
             console.log('Registration response:', response);
+            toast.success(t('registration_success'));
+            Navigate('/login');
         } catch (error) {
             console.error('Registration error:', error);
             // Loop on errors ans set them to state

@@ -1,11 +1,13 @@
-
 import { Navbar, Nav, Button, ButtonGroup, TabContainer } from 'react-bootstrap';
-import { FaGlobe, FaHome, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { FaGlobe, FaHome, FaSignInAlt, FaUser, FaUserPlus } from 'react-icons/fa';
 import light_messages from '../../assets/light_messages.png';
 import './TopNavbar.css';
 import { useTranslation } from 'react-i18next';
 import useLanguage from '../../hooks/languages/useLanguage';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { isLoggedIn, clearTokens } from '../../services/authService';
+import { useUser } from '../../contexts/UserContext';
+import { toast } from 'react-toastify';
 
 function TopNavbar() {
     const { t } = useTranslation();
@@ -24,16 +26,9 @@ function TopNavbar() {
 
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="align-items-center">
-                        <Nav.Link as={Link} to="/" className="mx-2">
-                            <FaHome className="me-1" /> {t('home')}
-                        </Nav.Link>
-                        <Nav.Link as={Link} to="/register" className="mx-2">
-                            <FaUserPlus className="me-1" /> {t('register')}
-                        </Nav.Link>
-                        <Nav.Link as={Link} to="/login" className="mx-2">
-                            <FaSignInAlt className="me-1" /> {t('login')}
-                        </Nav.Link>
-                        
+                        {
+                            NavLinks()
+                        }
                         <ButtonGroup size="sm" className="mx-3 language-box align-items-center">
                             <FaGlobe className='mx-2' size={18}></FaGlobe>
                             <Button variant="outline-secondary" onClick={ () => changeLanguage('en') }
@@ -47,6 +42,58 @@ function TopNavbar() {
             </TabContainer>
         </Navbar>
     )
+}
+
+
+const NavLinks = () => {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { clearUser, user } = useUser();
+
+    const handleLogout = () => {
+        clearTokens();
+        clearUser();
+        toast.warning(t('logout_success'));
+        navigate('/');
+    }
+
+    if (isLoggedIn()) {
+        return (
+            <>
+            <Nav.Link as={Link} to="#" className="mx-2 d-flex align-items-center">
+                {user?.profile_image ? (
+                    <img 
+                        src={user.profile_image} 
+                        alt={user.first_name}
+                        className="rounded-circle mx-1"
+                        style={{ width: '24px', height: '24px', objectFit: 'cover' }}
+                    />
+                ) : (
+                    <FaUser className="mx-1" />
+                )}
+                {user?.first_name} {user?.last_name}  
+            </Nav.Link>
+            <Nav.Link onClick={handleLogout} className="mx-2 d-flex align-items-center nav-link-logout">
+                <FaSignInAlt size={18} color='crimson' className="mx-1" /> {t('logout')}
+            </Nav.Link>
+            </>
+        )
+    }
+    else {
+        return ( 
+        <>
+            <Nav.Link as={Link} to="/" className="mx-2">
+                <FaHome className="me-1" /> {t('home')}
+            </Nav.Link>
+            <Nav.Link as={Link} to="/register" className="mx-2">
+                <FaUserPlus className="me-1" /> {t('register')}
+            </Nav.Link>
+            <Nav.Link as={Link} to="/login" className="mx-2">
+                <FaSignInAlt className="me-1" /> {t('login')}
+            </Nav.Link>
+        </>
+        );
+    }
 }
 
 export default TopNavbar;

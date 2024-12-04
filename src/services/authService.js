@@ -14,6 +14,9 @@ export const registerUser = async (formData) => {
 // Login a user
 export const loginUser = async (formData) => {
   const response = await apiClient.post('/token/', formData);
+  if (response.data.access) {
+    setTokens(response.data.access, response.data.refresh);
+  }
   return response.data;
 };
 
@@ -27,6 +30,11 @@ export const setTokens = (accessToken, refreshToken) => {
   if (refreshToken) {
     localStorage.setItem('refresh_token', refreshToken);
   }
+};
+
+export const isLoggedIn = () => {
+  // console.log('Access token:', getAccessToken());
+  return !!getAccessToken();
 };
 
 export const clearTokens = () => {
