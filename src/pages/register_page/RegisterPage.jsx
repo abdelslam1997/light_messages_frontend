@@ -82,6 +82,7 @@ const RegisterPage = () => {
                             value={formData.first_name}
                             onChange={handleChange}
                             placeholder={t('first_name')}
+                            autoComplete="given-name"
                         />
                         {errors.first_name && <div className="invalid-feedback">{errors.first_name}</div>}
                     </div>
@@ -94,6 +95,7 @@ const RegisterPage = () => {
                             value={formData.last_name}
                             onChange={handleChange}
                             placeholder={t('last_name')}
+                            autoComplete="family-name"
                         />
                         {errors.last_name && <div className="invalid-feedback">{errors.last_name}</div>}
                     </div>
@@ -108,6 +110,7 @@ const RegisterPage = () => {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder={t('email')}
+                        autoComplete="email"
                     />
                     {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                 </div>
@@ -122,6 +125,7 @@ const RegisterPage = () => {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder={t('password')}
+                            autoComplete="new-password"
                         />
                         {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                     </div>
@@ -134,6 +138,7 @@ const RegisterPage = () => {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             placeholder={t('confirm_password')}
+                            autoComplete="new-password"
                         />
                         {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
                     </div>
@@ -147,6 +152,7 @@ const RegisterPage = () => {
                         className={`form-control mt-2 ${errors.profile_image ? 'is-invalid' : ''}`}
                         onChange={handleChange}
                         accept="image/*"
+                        autoComplete="off"
                     />
                     {errors.profile_image && <div className="invalid-feedback">{errors.profile_image}</div>}
                 </div>
