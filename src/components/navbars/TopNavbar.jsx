@@ -4,20 +4,12 @@ import { FaGlobe, FaHome, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import light_messages from '../../assets/light_messages.png';
 import './TopNavbar.css';
 import { useTranslation } from 'react-i18next';
+import useLanguage from '../../hooks/languages/useLanguage';
 
 function TopNavbar() {
-    const { t, i18n } = useTranslation();
-
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-        // change the direction of the page
-        document.documentElement.dir = (lng === 'ar') ? 'rtl' : 'ltr';
-    };
-
-    const isLanguageActive = (lng) => {
-        return i18n.language === lng ? 'active' : '';
-    }
-
+    const { t } = useTranslation();
+    const { changeLanguage, isLanguageActive } = useLanguage();
+    
     return (
         <Navbar bg="light" expand="sm" className="shadow-sm py-0">
             <TabContainer>
