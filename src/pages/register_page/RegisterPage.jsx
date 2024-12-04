@@ -2,16 +2,17 @@ import { Container } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
 import { FaEnvelope, FaImage, FaLock, FaPaperPlane, FaUser } from "react-icons/fa";
 import { useState } from "react";
+import { registerUser } from "../../services/authService";
 
 const RegisterPage = () => {
     const { t } = useTranslation();
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         email: '',
         password: '',
         confirmPassword: '',
-        profileImage: null
+        profile_image: null
     });
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,14 +27,14 @@ const RegisterPage = () => {
 
     const validateForm = () => {
         const newErrors = {};
-        if (!formData.firstName.trim()) newErrors.firstName = t('first_name_required');
-        if (!formData.lastName.trim()) newErrors.lastName = t('last_name_required');
+        if (!formData.first_name.trim()) newErrors.first_name = t('first_name_required');
+        if (!formData.last_name.trim()) newErrors.last_name = t('last_name_required');
         if (!formData.email.trim()) newErrors.email = t('email_required');
         else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = t('invalid_email');
         if (!formData.password) newErrors.password = t('password_required');
         if (!formData.confirmPassword) newErrors.confirmPassword = t('confirm_password_required');
         if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = t('passwords_dont_match');
-        if (!formData.profileImage) newErrors.profileImage = t('profile_image_required');
+        if (!formData.profile_image) newErrors.profile_image = t('profile_image_required');
 
         return newErrors;
     };
@@ -49,10 +50,19 @@ const RegisterPage = () => {
 
         setIsSubmitting(true);
         try {
-            // Add your API call here
             console.log('Form submitted:', formData);
+            const response = await registerUser(formData);
+            console.log('Registration response:', response);
         } catch (error) {
             console.error('Registration error:', error);
+            // Loop on errors ans set them to state
+            const newErrors = {};
+            // Loop on key value of data
+            for (const key in error.response.data) {
+                // Set the key of the error to the value of the error
+                newErrors[key] = error.response.data[key];
+            }
+            setErrors(newErrors);
         } finally {
             setIsSubmitting(false);
         }
@@ -64,28 +74,28 @@ const RegisterPage = () => {
             <form onSubmit={handleSubmit}>
                 <div className="d-flex gap-2 mt-3">
                     <div className="w-100">
-                        <label className="my-1" htmlFor="firstName"><FaUser /> {t('first_name')}</label>
+                        <label className="my-1" htmlFor="first_name"><FaUser /> {t('first_name')}</label>
                         <input
                             type="text"
-                            name="firstName"
-                            className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                            value={formData.firstName}
+                            name="first_name"
+                            className={`form-control ${errors.first_name ? 'is-invalid' : ''}`}
+                            value={formData.first_name}
                             onChange={handleChange}
                             placeholder={t('first_name')}
                         />
-                        {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
+                        {errors.first_name && <div className="invalid-feedback">{errors.first_name}</div>}
                     </div>
                     <div className="w-100">
-                        <label className="my-1" htmlFor="lastName"><FaUser /> {t('last_name')}</label>
+                        <label className="my-1" htmlFor="last_name"><FaUser /> {t('last_name')}</label>
                         <input
                             type="text"
-                            name="lastName"
-                            className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                            value={formData.lastName}
+                            name="last_name"
+                            className={`form-control ${errors.last_name ? 'is-invalid' : ''}`}
+                            value={formData.last_name}
                             onChange={handleChange}
                             placeholder={t('last_name')}
                         />
-                        {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
+                        {errors.last_name && <div className="invalid-feedback">{errors.last_name}</div>}
                     </div>
                 </div>
 
@@ -130,15 +140,15 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="mt-3">
-                    <label htmlFor="profileImage"><FaImage /> {t('profile_image')}</label>
+                    <label htmlFor="profile_image"><FaImage /> {t('profile_image')}</label>
                     <input
                         type="file"
-                        name="profileImage"
-                        className={`form-control mt-2 ${errors.profileImage ? 'is-invalid' : ''}`}
+                        name="profile_image"
+                        className={`form-control mt-2 ${errors.profile_image ? 'is-invalid' : ''}`}
                         onChange={handleChange}
                         accept="image/*"
                     />
-                    {errors.profileImage && <div className="invalid-feedback">{errors.profileImage}</div>}
+                    {errors.profile_image && <div className="invalid-feedback">{errors.profile_image}</div>}
                 </div>
 
                 <button 

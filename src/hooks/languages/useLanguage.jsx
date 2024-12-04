@@ -10,7 +10,9 @@ const useLanguage = () => {
 
   const isLanguageActive = (lng) => i18n.language === lng;
 
-  return { changeLanguage, isLanguageActive };
+  const getActiveLanguage = () => i18n.language;
+
+  return { changeLanguage, isLanguageActive, getActiveLanguage };
 };
 
 export default useLanguage;
