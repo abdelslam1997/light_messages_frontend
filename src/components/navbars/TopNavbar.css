@@ -8,8 +8,15 @@
     transition: color 0.3s;
 }
 
-.language-box button:hover {
+.language-box button:hover, .language-box button.active  {
     background-color: #278cf7;
+}
+
+/* style if body rtl */ 
+[dir="rtl"] .language-box {
+    position: absolute !important;
+    left: 5px !important;
+    right: unset !important;
 }
 
 /* Media Query for Mobile Devices */
@@ -17,6 +24,12 @@
     .language-box {
         position: relative !important;
         right: 0 !important;
+        left: unset !important;
+    }
+    [dir="rtl"] .language-box {
+        position: relative !important;
+        right: 0 !important;
+        left: unset !important;
     }
     
 }
