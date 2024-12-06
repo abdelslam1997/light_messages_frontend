@@ -1,0 +1,8 @@
+.hover-shadow {
+    transition: 0.3s;
+}
+
+.hover-shadow:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}

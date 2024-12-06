@@ -8,3 +8,8 @@
 .chat-sidebar {
     flex: 1 1 auto;
 }
+
+.ul-no-bullets {
+    list-style-type: none;
+    padding: 0;
+}
