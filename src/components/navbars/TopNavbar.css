@@ -1,3 +1,7 @@
+.top-navbar {
+    z-index: 99999;
+    background-color: white !important;
+}
 .language-box {
     position: absolute !important;
     right: 5px !important;

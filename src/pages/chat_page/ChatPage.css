@@ -1,0 +1,9 @@
+
+
+.chat-page-container {
+    display: flex !important;
+    flex-direction: row !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    min-height: calc(100vh - 40px) !important;   
+}

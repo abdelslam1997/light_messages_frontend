@@ -14,7 +14,7 @@ function TopNavbar() {
     const { changeLanguage, isLanguageActive } = useLanguage();
 
     return (
-        <Navbar bg="light" expand="sm" className="shadow-sm py-0">
+        <Navbar bg="light" expand="sm" className="shadow-sm py-0 top-navbar">
             <TabContainer>
 
                 <Navbar.Brand as={Link} to="/" className="fw-bold py-0">

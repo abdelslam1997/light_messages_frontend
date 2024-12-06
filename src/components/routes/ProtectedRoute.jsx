@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children, only_authenticated, only_unauthenticated }) 
   }
 
   if (only_unauthenticated && user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/chat" replace />;
   }
 
   return children;
