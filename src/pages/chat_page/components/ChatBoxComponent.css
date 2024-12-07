@@ -1,8 +1,16 @@
 .chat-box {
+    display: flex;
+    flex-direction: column;
     background-color: rgb(255, 255, 255) !important;
-    padding: 0rem 0.25rem !important;
+    padding: 0.25rem 0.25rem !important;
+    flex: 1 1 60% !important;
+    justify-content: space-between !important;
+    max-height: calc(100vh - 50px);
 }
 
-.chat-box {
-    flex: 3 1 auto;
+.chat-messages {
+    overflow-y: scroll !important;
+    display: flex;
+    flex-direction: column;
+    flex: 10 !important;
 }

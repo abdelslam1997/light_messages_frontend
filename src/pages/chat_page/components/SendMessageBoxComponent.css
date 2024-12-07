@@ -1,0 +1,5 @@
+.send-message-box {
+    width: 100%;
+    align-self: flex-end !important;
+    flex: 1 !important;
+}

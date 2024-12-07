@@ -1,0 +1,28 @@
+.message-card {
+    max-width: 60%;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+    display: inline-block;
+}
+
+.message-card.sender {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.message-card.receiver {
+    background-color: #e6f7f5;
+    align-self: flex-start;
+    margin-right: auto;
+}
+
+.message-card .timestamp {
+    display: block;
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 5px;
+    text-align: right;
+}

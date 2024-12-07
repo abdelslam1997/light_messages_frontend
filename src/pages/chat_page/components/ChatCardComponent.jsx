@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import defaultAvatar from '../../../assets/default_avatar.png';
 import './ChatCardComponent.css';
 
-const ChatCardComponent = ({ user }) => {
+const ChatCardComponent = ({ user, onUserSelect, selectedUser }) => {
+
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -13,10 +14,18 @@ const ChatCardComponent = ({ user }) => {
         });
     };
 
+    const handleUserSelect = (user) => {
+        onUserSelect(user);
+    };
+
     return (
-        <Card className="my-0 shadow-sm hover-shadow transition-all">
+        <Card 
+            className={"my-0 shadow-sm hover-shadow transition-all" + (selectedUser && selectedUser.id === user.id ? ' selected' : '')}
+            onClick={() => handleUserSelect(user)}
+            style={{ cursor: 'pointer' }}
+        >
             <Card.Body className="d-flex align-items-center">
-                <div className="me-3">
+                <div className="mx-1">
                     <img
                         src={user.profile_image || defaultAvatar}
                         alt={`${user.first_name} ${user.last_name}`}
@@ -25,11 +34,11 @@ const ChatCardComponent = ({ user }) => {
                         onError={(e) => {e.target.src = defaultAvatar}}
                     />
                 </div>
-                <div className="flex-grow-1">
+                <div className="flex-grow-1 mx-1">
                     <div className="d-flex justify-content-between align-items-center">
                         <h5 className="mb-1">{`${user.first_name} ${user.last_name}`}</h5>
                         <small className="text-muted">
-                            Joined {formatDate(user.date_joined)}
+                            {formatDate(user.date_joined)}
                         </small>
                     </div>
                     <p className="mb-0 text-muted">
@@ -49,7 +58,9 @@ ChatCardComponent.propTypes = {
         last_name: PropTypes.string.isRequired,
         date_joined: PropTypes.string.isRequired,
         profile_image: PropTypes.string
-    }).isRequired
+    }).isRequired,
+    onUserSelect: PropTypes.func.isRequired,
+    selectedUser: PropTypes.object
 };
 
 export default ChatCardComponent;
