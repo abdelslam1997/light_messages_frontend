@@ -14,3 +14,16 @@
     flex-direction: column;
     flex: 10 !important;
 }
+
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 149, 255, 0.863);
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 149, 255);
+}

@@ -1,12 +1,30 @@
 .hover-shadow {
     transition: 0.3s;
+    overflow-x: hidden;
 }
 
 .hover-shadow:hover {
-    background-color: #f1f1f1;
+    background-color: #278cf7a0;
     cursor: pointer;
+    color: white !important;
 }
 
 .hover-shadow.selected {
-    background-color: #f1f1f1;
+    background-color: #278CF7;
+    color: white;
+}
+
+.hover-shadow:hover * {
+    color: white !important;
+}
+
+.hover-shadow.selected * {
+    color: white !important;
+}
+
+/* less than 768 hide all inside text and keep image */
+@media (max-width: 768px) {
+    .hover-shadow {
+        font-size: 0.9rem !important;
+    }
 }

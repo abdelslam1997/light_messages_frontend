@@ -3,6 +3,9 @@
     background-color: #ffffffea;
     box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.1);
     z-index: 1;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    max-height: calc(100vh - 50px);
 }
 
 .chat-sidebar {
@@ -12,4 +15,17 @@
 .ul-no-bullets {
     list-style-type: none;
     padding: 0;
+}
+
+.chat-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 149, 255, 0.863);
+    border-radius: 10px;
+}
+
+.chat-sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 149, 255);
 }

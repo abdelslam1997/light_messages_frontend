@@ -2,8 +2,7 @@ import "./ChatBoxComponent.css";
 import PropTypes from 'prop-types';
 import defaultAvatar from '../../../assets/default_avatar.png';
 import SendMessageBoxComponent from './SendMessageBoxComponent';
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { sendMessageAPI, getMessagesAPI } from "../../../services/userService";
 import MessageCardComponent from './MessageCardComponent';
 
@@ -11,9 +10,11 @@ const ChatBoxComponent = ({ selectedUser }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
+    const chatMessagesElem = useRef(null);
+
     const sendMessage = async () => {
         // Send message to the selected user
-        alert(`Sending message: ${message}`);
+        // alert(`Sending message: ${message}`);
         const response = await sendMessageAPI(selectedUser.id, message);
         // feed response to messages
         setMessages([...messages, response]);
@@ -34,6 +35,11 @@ const ChatBoxComponent = ({ selectedUser }) => {
         // Clear the message box when a new user is selected
         setMessage('');
     }, [selectedUser]);
+
+    useEffect(() => {
+        if (!chatMessagesElem.current) return;
+        chatMessagesElem.current.scrollTop = chatMessagesElem.current.scrollHeight;
+    }, [messages]);
 
     if (!selectedUser) {
         return (
@@ -57,7 +63,7 @@ const ChatBoxComponent = ({ selectedUser }) => {
                     {selectedUser.first_name} {selectedUser.last_name}
                 </h5>
             </div>
-            <div className="chat-messages p-3">
+            <div className="chat-messages p-3" ref={chatMessagesElem}>
                 {messages.map((message) => (
                     <MessageCardComponent
                         key={message.id}

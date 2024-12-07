@@ -3,3 +3,7 @@
     align-self: flex-end !important;
     flex: 1 !important;
 }
+
+.send-message-box input:focus {
+    box-shadow: 0px 0px 3px 0px rgba(0, 149, 255, 0.863) !important;
+}
