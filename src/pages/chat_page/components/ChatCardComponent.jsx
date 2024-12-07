@@ -17,16 +17,19 @@ const ChatCardComponent = ({ user, onUserSelect, selectedUser }) => {
         });
     };
 
-    const handleUserSelect = (user) => {
-        onUserSelect(user);
+    const handleUserSelect = () => {
         // Clear unread_count when user clicks on the chat
-        user.unread_count = 0;
+        const updatedUser = { ...user, unread_count: 0 };
+        onUserSelect(updatedUser);
+        user.unread_count = 0; // Update the local user object to trigger re-render
     };
+
+
 
     return (
         <Card 
             className={"my-0 shadow-sm hover-shadow transition-all" + (selectedUser && selectedUser.user_id === user.user_id ? ' selected' : '')}
-            onClick={() => handleUserSelect(user)}
+            onClick={handleUserSelect}
             style={{ cursor: 'pointer' }}
         >
             <div className="position-relative">

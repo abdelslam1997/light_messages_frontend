@@ -6,33 +6,42 @@ import { useState, useEffect, useRef } from "react";
 import { sendMessageAPI, getMessagesAPI } from "../../../services/userService";
 import MessageCardComponent from './MessageCardComponent';
 
-const ChatBoxComponent = ({ selectedUser }) => {
+const ChatBoxComponent = ({ selectedUser, users, setUsers }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
     const chatMessagesElem = useRef(null);
 
     const sendMessage = async () => {
-        // Send message to the selected user
-        // alert(`Sending message: ${message}`);
         const response = await sendMessageAPI(selectedUser.user_id, message);
-        // feed response to messages
         setMessages([...messages, response]);
         setMessage('');
+
+        // Update the chat list locally
+        const updatedUsers = users.map(user => {
+            if (user.user_id === selectedUser.user_id) {
+                return {
+                    ...user,
+                    last_message: response.message,
+                    timestamp: response.timestamp,
+                };
+            }
+            return user;
+        });
+
+        // Reorder the chat list
+        updatedUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        setUsers(updatedUsers);
     };
 
-    useEffect( () => {
-        // Fetch chat messages for the selected user
+    useEffect(() => {
         if (!selectedUser) return;
         const fetchMessages = async () => {
             const messages = await getMessagesAPI(selectedUser.user_id);
-            console.log('Messages:', messages);
             setMessages(messages);
         };
 
         fetchMessages();
-
-        // Clear the message box when a new user is selected
         setMessage('');
     }, [selectedUser]);
 
@@ -79,10 +88,13 @@ const ChatBoxComponent = ({ selectedUser }) => {
 
 ChatBoxComponent.propTypes = {
     selectedUser: PropTypes.shape({
+        user_id: PropTypes.number.isRequired,
         first_name: PropTypes.string.isRequired,
         last_name: PropTypes.string,
-        profile_image: PropTypes.string
-    })
+        profile_image: PropTypes.string,
+    }),
+    users: PropTypes.array.isRequired,
+    setUsers: PropTypes.func.isRequired,
 };
 
 export default ChatBoxComponent;
