@@ -15,7 +15,7 @@ const ChatBoxComponent = ({ selectedUser }) => {
     const sendMessage = async () => {
         // Send message to the selected user
         // alert(`Sending message: ${message}`);
-        const response = await sendMessageAPI(selectedUser.id, message);
+        const response = await sendMessageAPI(selectedUser.user_id, message);
         // feed response to messages
         setMessages([...messages, response]);
         setMessage('');
@@ -25,7 +25,7 @@ const ChatBoxComponent = ({ selectedUser }) => {
         // Fetch chat messages for the selected user
         if (!selectedUser) return;
         const fetchMessages = async () => {
-            const messages = await getMessagesAPI(selectedUser.id);
+            const messages = await getMessagesAPI(selectedUser.user_id);
             console.log('Messages:', messages);
             setMessages(messages);
         };
@@ -68,7 +68,7 @@ const ChatBoxComponent = ({ selectedUser }) => {
                     <MessageCardComponent
                         key={message.id}
                         message={message}
-                        isSender={message.sender != selectedUser.id}
+                        isSender={message.sender != selectedUser.user_id}
                     />
                 ))}
             </div>
@@ -80,7 +80,7 @@ const ChatBoxComponent = ({ selectedUser }) => {
 ChatBoxComponent.propTypes = {
     selectedUser: PropTypes.shape({
         first_name: PropTypes.string.isRequired,
-        last_name: PropTypes.string.isRequired,
+        last_name: PropTypes.string,
         profile_image: PropTypes.string
     })
 };

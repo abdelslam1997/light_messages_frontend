@@ -11,8 +11,9 @@ const ChatSideBarComponent = ({ onUserSelect, selectedUser }) => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const users = await listUsers();
-            setUsers(users);
+            const users = await chatsHistory();
+            console.log(users);
+            setUsers(users.results);
         };
 
         fetchUsers();
@@ -23,7 +24,7 @@ const ChatSideBarComponent = ({ onUserSelect, selectedUser }) => {
             <ul className="ul-no-bullets p-0 m-0">
                 {users.map((user) => (
                     <ChatCardComponent 
-                        key={user.id} 
+                        key={user.user_id} 
                         user={user}
                         onUserSelect={onUserSelect}
                         selectedUser={selectedUser}
@@ -35,7 +36,8 @@ const ChatSideBarComponent = ({ onUserSelect, selectedUser }) => {
 };
 
 ChatSideBarComponent.propTypes = {
-    onUserSelect: PropTypes.func.isRequired
+    onUserSelect: PropTypes.func.isRequired,
+    selectedUser: PropTypes.object,
 };
 
 export default ChatSideBarComponent;
