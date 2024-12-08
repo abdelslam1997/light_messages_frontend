@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { sendMessageAPI, getMessagesAPI } from "../../../services/userService";
 import MessageCardComponent from './MessageCardComponent';
 
-const ChatBoxComponent = ({ selectedUser, users, setUsers }) => {
+const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
@@ -24,6 +24,7 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers }) => {
                     ...user,
                     last_message: response.message,
                     timestamp: response.timestamp,
+                    unread_count: 0
                 };
             }
             return user;
@@ -49,6 +50,17 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers }) => {
         if (!chatMessagesElem.current) return;
         chatMessagesElem.current.scrollTop = chatMessagesElem.current.scrollHeight;
     }, [messages]);
+
+    // Add effect to handle new messages from WebSocket
+    useEffect(() => {
+        if (!latestMessage || !selectedUser) return;
+        
+        // Check if message belongs to current chat
+        if (latestMessage.sender_id === selectedUser.user_id || 
+            latestMessage.receiver_id === selectedUser.user_id) {
+            setMessages(prev => [...prev, latestMessage]);
+        }
+    }, [latestMessage, selectedUser]);
 
     if (!selectedUser) {
         return (
@@ -95,6 +107,7 @@ ChatBoxComponent.propTypes = {
     }),
     users: PropTypes.array.isRequired,
     setUsers: PropTypes.func.isRequired,
+    latestMessage: PropTypes.object,
 };
 
 export default ChatBoxComponent;
