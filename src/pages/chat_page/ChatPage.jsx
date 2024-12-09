@@ -44,6 +44,19 @@ const ChatPage = () => {
         };
 
         socketRef.current.onmessage = (event) => {
+            // Handle ping messages
+            const type = JSON.parse(event.data).type;
+            if (type === 'ping') {
+                console.log('WebSocket ping received');
+                // Send a pong response to the server
+                socketRef.current.send(JSON.stringify({
+                    type: 'pong',
+                    message: 'Pong response'
+                }));
+                return;
+            }
+    
+            // Handle other message types
             const data = JSON.parse(event.data);
             console.log('WebSocket message received', data);
 
