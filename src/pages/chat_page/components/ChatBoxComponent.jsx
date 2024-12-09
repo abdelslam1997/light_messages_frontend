@@ -56,11 +56,10 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage }) => {
         if (!latestMessage || !selectedUser) return;
         
         // Check if message belongs to current chat
-        if (latestMessage.sender_id === selectedUser.user_id || 
-            latestMessage.receiver_id === selectedUser.user_id) {
+        if (latestMessage.sender === selectedUser.user_id || latestMessage.receiver === selectedUser.user_id) {
             setMessages(prev => [...prev, latestMessage]);
         }
-    }, [latestMessage, selectedUser]);
+    }, [latestMessage]);
 
     if (!selectedUser) {
         return (
