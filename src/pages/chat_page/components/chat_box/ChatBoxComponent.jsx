@@ -1,9 +1,9 @@
 import "./ChatBoxComponent.css";
 import PropTypes from 'prop-types';
-import defaultAvatar from '../../../assets/default_avatar.png';
+import defaultAvatar from '/src/assets/default_avatar.png';
 import SendMessageBoxComponent from './SendMessageBoxComponent';
 import { useState, useEffect, useRef } from "react";
-import { sendMessageAPI, getMessagesAPI } from "../../../services/conversationsService";
+import { sendMessageAPI, getMessagesAPI } from "../../../../services/conversationsService";
 import MessageCardComponent from './MessageCardComponent';
 
 const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage }) => {

@@ -1,6 +1,6 @@
 import "./ChatPage.css";
-import ChatSideBarComponent from "./components/ChatSideBarComponent";
-import ChatBoxComponent from "./components/ChatBoxComponent";
+import ChatSideBarComponent from "./components/chat_side_bar/ChatSideBarComponent";
+import ChatBoxComponent from "./components/chat_box/ChatBoxComponent";
 import { useState, useEffect, useRef } from "react";
 import { chatsHistory } from "../../services/conversationsService";
 import notifSound from "../../assets/sounds/notification.mp3";
