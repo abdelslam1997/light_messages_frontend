@@ -29,7 +29,7 @@ const LoginPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+        // console.log('Form submitted:', formData);
         try {
             const response = await loginUser(formData);
             const userData = await getCurrentUser();

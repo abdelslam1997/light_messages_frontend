@@ -71,7 +71,7 @@ const NavLinks = () => {
                 ) : (
                     <FaUser className="mx-1" />
                 )}
-                {user?.first_name} {user?.last_name}  
+                {user?.first_name} {user?.last_name}
             </Nav.Link>
             <Nav.Link onClick={handleLogout} className="mx-2 d-flex align-items-center nav-link-logout">
                 <FaSignInAlt size={18} color='crimson' className="mx-1" /> {t('logout')}

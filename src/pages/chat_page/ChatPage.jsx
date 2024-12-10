@@ -1,9 +1,8 @@
-import { Container, TabContainer } from "react-bootstrap";
 import "./ChatPage.css";
 import ChatSideBarComponent from "./components/ChatSideBarComponent";
 import ChatBoxComponent from "./components/ChatBoxComponent";
 import { useState, useEffect, useRef } from "react";
-import { chatsHistory } from "../../services/userService";
+import { chatsHistory } from "../../services/conversationsService";
 import notifSound from "../../assets/sounds/notification.mp3";
 
 const ChatPage = () => {
@@ -14,11 +13,11 @@ const ChatPage = () => {
     const audioRef = useRef(new Audio(notifSound));
 
     useEffect(() => {
-        const fetchUsers = async () => {
+        const fetchConversations = async () => {
             const response = await chatsHistory();
             setUsers(response.results);
         };
-        fetchUsers();
+        fetchConversations();
     }, []);
 
     const handleUserSelect = (user) => {

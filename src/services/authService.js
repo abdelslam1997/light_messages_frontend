@@ -13,7 +13,7 @@ export const registerUser = async (formData) => {
 
 // Login a user
 export const loginUser = async (formData) => {
-  const response = await apiClient.post('/token/', formData);
+  const response = await apiClient.post('auth/token/', formData);
   if (response.data.access) {
     setTokens(response.data.access, response.data.refresh);
   }

@@ -54,7 +54,7 @@ const RegisterPage = () => {
 
         setIsSubmitting(true);
         try {
-            console.log('Form submitted:', formData);
+            // console.log('Form submitted:', formData);
             const response = await registerUser(formData);
             console.log('Registration response:', response);
             toast.success(t('registration_success'));
