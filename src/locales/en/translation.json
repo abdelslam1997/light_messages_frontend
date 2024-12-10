@@ -28,5 +28,6 @@
   "Confirm Password": "Confirm Password",
   "confirm_password": "Confirm Password",
   "profile_image": "Profile Image",
-  "registering...": "Registering..."
+  "registering...": "Registering...",
+  "type_message": "Type a message ..."
 }

@@ -89,6 +89,7 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage }) => {
                         key={message.id}
                         message={message}
                         isSender={message.sender != selectedUser.user_id}
+                        selectedUser={selectedUser}
                     />
                 ))}
             </div>
