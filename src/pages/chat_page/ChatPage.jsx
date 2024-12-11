@@ -11,6 +11,7 @@ const ChatPage = () => {
     const [latestMessage, setLatestMessage] = useState(null);
     const socketRef = useRef(null);
     const audioRef = useRef(new Audio(notifSound));
+    const [lastReadInfo, setLastReadInfo] = useState(null);
 
     useEffect(() => {
         const fetchConversations = async () => {
@@ -26,9 +27,8 @@ const ChatPage = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('access_token');
-        if (!token) {
-            return;
-        }
+        if (!token) return;
+
         // Create WebSocket connection
         const wsUrl = `${process.env.REACT_APP_WEBSOCKET_URL}/messages/?token=${token}`;
         socketRef.current = new WebSocket(wsUrl);
@@ -43,8 +43,9 @@ const ChatPage = () => {
         };
 
         socketRef.current.onmessage = (event) => {
-            // Handle ping messages
-            const type = JSON.parse(event.data).type;
+            const data = JSON.parse(event.data);
+            const type = data.type;
+
             if (type === 'ping') {
                 console.log('WebSocket ping received');
                 // Send a pong response to the server
@@ -54,43 +55,42 @@ const ChatPage = () => {
                 }));
                 return;
             }
-    
-            // Handle other message types
-            const data = JSON.parse(event.data);
-            console.log('WebSocket message received', data);
-
-            // Update latest message state
-            setLatestMessage(data); 
-
-            // This is example of data received from the server
-            /* {id: 11, sender: 1, message: 'Hola', timestamp: '2024-12-08T11:10:07.361101+00:00'} */
-            // Update users state with new message data
-            setUsers(prevUsers => {
-                // Find and update the user that received/sent the message
-                const updatedUsers = prevUsers.map(user => {
-                    if (user.user_id === data.sender) {
-                        return {
-                            ...user,
-                            last_message: data.message,
-                            timestamp: data.timestamp,
-                            unread_count: user.unread_count + 1
-                        };
-                    }
-                    return user;
+            else if (type === 'read_message') {
+                const messageData = data.message;
+                console.log('Read message data:', messageData);
+                if (selectedUser && messageData.reader_id === selectedUser.user_id) {
+                    console.log('Updating last read info:', messageData);
+                    setLastReadInfo(messageData);  // Just pass the entire message data
+                }
+            }
+            else if (type === 'new_message') {
+                const data = JSON.parse(event.data).message;
+                console.log('WebSocket new_message received', data);
+                // Update latest message state
+                setLatestMessage(data); 
+                setUsers(prevUsers => {
+                    // Find and update the user that received/sent the message
+                    const updatedUsers = prevUsers.map(user => {
+                        if (user.user_id === data.sender) {
+                            return {
+                                ...user,
+                                last_message: data.message,
+                                timestamp: data.timestamp,
+                                unread_count: user.unread_count + 1
+                            };
+                        }
+                        return user;
+                    });
+                    // Sort users by timestamp
+                    return updatedUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                 });
-
-                // Sort users by timestamp
-                return updatedUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            });
-            
-            // Play notification sound
-            try {
-                audioRef.current.play();
+                try {
+                    audioRef.current.play();
+                }
+                catch (error) {
+                    console.error('Audio playback error:', error);
+                }
             }
-            catch (error) {
-                console.error('Audio playback error:', error);
-            }
-
         };
 
         socketRef.current.onerror = (error) => {
@@ -107,7 +107,7 @@ const ChatPage = () => {
                 socketRef.current.close(1000, 'Component unmounted');
             }
         };        
-    }, []);
+    }, [selectedUser]);
 
     return (
         <div className="chat-page-container">
@@ -121,6 +121,7 @@ const ChatPage = () => {
                 users={users}
                 setUsers={setUsers}
                 latestMessage={latestMessage}
+                lastReadInfo={lastReadInfo}  // Pass lastReadInfo directly
             />
         </div>
     );

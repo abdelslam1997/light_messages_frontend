@@ -7,7 +7,7 @@ import { sendMessageAPI, getMessagesAPI } from "../../../../services/conversatio
 import MessageCardComponent from './MessageCardComponent';
 import { FaSpinner } from "react-icons/fa";
 
-const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage }) => {
+const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage, lastReadInfo }) => {
     const [state, setState] = useState({
         message: '',
         messages: [],
@@ -64,7 +64,7 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage }) => {
     const handleScroll = () => {
         if (chatMessagesElem.current) {
             const firstLoad = state.nextPageNumber == null || state.nextPageNumber == 2;
-            console.log('firstLoad:', firstLoad);
+            // console.log('firstLoad:', firstLoad);
             const scrollOptions = {
                 top: !firstLoad
                     ? 1000 
@@ -126,6 +126,21 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage }) => {
         observer.observe(loadMessagesSpinner.current);
         return () => observer.disconnect();
     }, [loadMessagesSpinner, state.nextPageNumber]);
+
+    // Update read status effect
+    useEffect(() => {
+        if (!lastReadInfo || !selectedUser) return;
+        console.log('Updating read status 2:', lastReadInfo);
+        // loop through messages and update read status till hit the last read message
+        const updatedMessages = state.messages.map(message => 
+            message.id <= lastReadInfo.last_read_message_id
+                ? { ...message, read: true }
+                : message
+        );
+
+        updateState({ messages: updatedMessages });
+
+    }, [lastReadInfo]);
 
     if (!selectedUser) {
         return (
@@ -193,6 +208,7 @@ ChatBoxComponent.propTypes = {
     users: PropTypes.array.isRequired,
     setUsers: PropTypes.func.isRequired,
     latestMessage: PropTypes.object,
+    updateMessagesReadStatus: PropTypes.func,
 };
 
 export default ChatBoxComponent;

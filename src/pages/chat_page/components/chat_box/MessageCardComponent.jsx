@@ -11,8 +11,8 @@ const MessageCardComponent = ({ message, isSender, selectedUser }) => {
     // Determine the profile image
     const profileImage = isSender ? user_profile_image : (selectedUser.profile_image || defaultAvatar);
 
-    // Determine the status icon
-    const statusIcon = message.read ? '✓✓' : '✓'; // Replace with actual icons or use an icon library
+    // Only show read status for messages sent by the current user
+    const showReadStatus = isSender && message.sender !== selectedUser.user_id;
 
     return (
         <div className={`message-card ${isSender ? 'sender' : 'receiver'}`}>
@@ -21,7 +21,11 @@ const MessageCardComponent = ({ message, isSender, selectedUser }) => {
                 <p>{message.message}</p>
                 <div className="message-info">
                     <span className="timestamp">{new Date(message.timestamp).toLocaleString()}</span>
-                    {isSender && <span className={`status-icon ${message.read ? 'read' : 'sent'}`}>{statusIcon}</span> }
+                    {showReadStatus && (
+                        <span className={`status-icon ${message.read ? 'read' : 'sent'}`}>
+                            {message.read ? '✓✓' : '✓'}
+                        </span>
+                    )}
                 </div>
             </div>
         </div>
