@@ -119,6 +119,7 @@ const ChatPage = () => {
                 users={users}
                 onUserSelect={handleUserSelect}
                 selectedUser={selectedUser}
+                setUsers={setUsers}
             />
             <ChatBoxComponent 
                 selectedUser={selectedUser}

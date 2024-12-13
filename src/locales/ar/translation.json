@@ -29,5 +29,11 @@
   "confirm_password": "تأكيد كلمة المرور",
   "profile_image": "الصورة الشخصية",
   "registering...": "جارٍ التسجيل...",
-  "type_message": "اكتب رسالة ..."
+  "type_message": "اكتب رسالة ...",
+  "add_new_conversation": "إضافة محادثة جديدة",
+  "new_conversation_message": "مرحباً، :)",
+  "search_users_by_mail": "ابحث عن مستخدمين بالبريد الإلكتروني",
+  "search": "بحث",
+  "say_hello": "قل مرحباً",
+  "no_results_found": "لم يتم العثور على نتائج"
 }

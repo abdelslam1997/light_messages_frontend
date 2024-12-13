@@ -29,5 +29,11 @@
   "confirm_password": "Confirm Password",
   "profile_image": "Profile Image",
   "registering...": "Registering...",
-  "type_message": "Type a message ..."
+  "type_message": "Type a message ...",
+  "add_new_conversation": "Add a new conversation",
+  "new_conversation_message": "Hi, :)",
+  "search_users_by_mail": "Search users by email",
+  "search": "Search",
+  "say_hello": "Say hello",
+  "no_results_found": "No results found"
 }
