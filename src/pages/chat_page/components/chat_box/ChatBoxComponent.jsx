@@ -8,115 +8,107 @@ import MessageCardComponent from './MessageCardComponent';
 import { FaSpinner } from "react-icons/fa";
 
 const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage, lastReadInfo }) => {
-    const [state, setState] = useState({
-        message: '',
-        messages: [],
-        nextPageNumber: null,
-        isLoading: null,
-    });
+    const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState([]);
+    const [nextPageNumber, setNextPageNumber] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isFetchingOldMessages, setIsFetchingOldMessages] = useState(false);
 
     const loadMessagesSpinner = useRef(null);
     const chatMessagesElem = useRef(null);
 
-    const updateState = (newState) => {
-        setState(prev => ({ ...prev, ...newState }));
-    };
-
     const handleSendMessage = async () => {
-        const response = await sendMessageAPI(selectedUser.user_id, state.message);
-        updateState({ 
-            messages: [...state.messages, response],
-            message: ''
-        });
+        try {
+            const response = await sendMessageAPI(selectedUser.user_id, message);
+            setMessages(prevMessages => [...prevMessages, response]);
+            setMessage('');
 
-        const updatedUsers = users.map(user => 
-            user.user_id === selectedUser.user_id
-                ? {
-                    ...user,
-                    last_message: response.message,
-                    timestamp: response.timestamp,
-                    unread_count: 0
-                }
-                : user
-        ).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            const updatedUsers = users.map(user =>
+                user.user_id === selectedUser.user_id
+                    ? {
+                        ...user,
+                        last_message: response.message,
+                        timestamp: response.timestamp,
+                        unread_count: 0
+                    }
+                    : user
+            ).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-        setUsers(updatedUsers);
+            setUsers(updatedUsers);
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
     };
 
     const fetchMessages = async (pageNumber = null) => {
-        const messagesResponse = await getMessagesAPI(selectedUser.user_id, pageNumber);
-        const newMessages = messagesResponse.results.reverse();
-        
-        if (pageNumber) {
-            updateState({
-                messages: [...newMessages, ...state.messages],
-                nextPageNumber: messagesResponse.next,
-            });
-        } else {
-            updateState({
-                messages: newMessages,
-                nextPageNumber: messagesResponse.next,
-                isLoading: false,
-            });
+        try {
+            const messagesResponse = await getMessagesAPI(selectedUser.user_id, pageNumber);
+            const newMessages = messagesResponse.results.reverse();
+
+            if (pageNumber) {
+                setMessages(prevMessages => [...newMessages, ...prevMessages]);
+                setNextPageNumber(messagesResponse.next);
+            } else {
+                setMessages(newMessages);
+                setNextPageNumber(messagesResponse.next);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+            setIsLoading(false);
         }
     };
 
-    const handleScroll = () => {
-        if (chatMessagesElem.current) {
-            const firstLoad = state.nextPageNumber == null || state.nextPageNumber == 2;
-            // console.log('firstLoad:', firstLoad);
-            const scrollOptions = {
-                top: !firstLoad
-                    ? 1000 
-                    : chatMessagesElem.current.scrollHeight,
-                behavior: !firstLoad ? 'auto' : 'smooth'
-            };
-            chatMessagesElem.current.scrollTo(scrollOptions);
-        }
-    };
-
-    // Initial load effect
     useEffect(() => {
         if (!selectedUser) return;
-        
-        updateState({ message: '', isLoading: true });
+
+        setMessage('');
+        setIsLoading(true);
         fetchMessages();
 
-        setTimeout(() => {
-            if (loadMessagesSpinner.current && state.nextPageNumber != null) {
+        const timeoutId = setTimeout(() => {
+            if (loadMessagesSpinner.current && nextPageNumber != null) {
                 loadMessagesSpinner.current.style.display = 'block';
             }
         }, 1000);
+
+        return () => clearTimeout(timeoutId);
     }, [selectedUser]);
 
-    // Scroll effect
     useEffect(() => {
-        if (!state.isLoading && chatMessagesElem.current) {
-            handleScroll();
+        if (!isLoading && chatMessagesElem.current) {
+            const scrollToEnd = !isFetchingOldMessages;
+            const scrollOptions = {
+                top: scrollToEnd ?  chatMessagesElem.current.scrollHeight : 1000,
+                behavior: 'smooth'
+            };
+            chatMessagesElem.current.scrollTo(scrollOptions);
+            setIsFetchingOldMessages(false);
         }
-    }, [state.messages, selectedUser]);
+    }, [messages]);
 
-    // WebSocket message effect
     useEffect(() => {
         if (!latestMessage || !selectedUser) return;
-        
-        if (latestMessage.sender === selectedUser.user_id || 
-            latestMessage.receiver === selectedUser.user_id) {
-            updateState({ messages: [...state.messages, latestMessage] });
+
+        if (
+            latestMessage.sender === selectedUser.user_id ||
+            latestMessage.receiver === selectedUser.user_id
+        ) {
+            setMessages(prevMessages => [...prevMessages, latestMessage]);
         }
     }, [latestMessage]);
 
-    // Infinite scroll effect
     useEffect(() => {
         if (!loadMessagesSpinner.current) return;
 
         const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting && state.nextPageNumber) {
-                    fetchMessages(state.nextPageNumber);
+            entries => {
+                if (entries[0].isIntersecting && nextPageNumber) {
+                    setIsFetchingOldMessages(true);
+                    fetchMessages(nextPageNumber);
                 }
             },
-            { 
+            {
                 root: null,
                 threshold: 0.1,
                 rootMargin: '20px'
@@ -125,21 +117,18 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage, lastRe
 
         observer.observe(loadMessagesSpinner.current);
         return () => observer.disconnect();
-    }, [loadMessagesSpinner, state.nextPageNumber]);
+    }, [nextPageNumber]);
 
-    // Update read status effect
     useEffect(() => {
         if (!lastReadInfo || !selectedUser) return;
-        console.log('Updating read status 2:', lastReadInfo);
-        // loop through messages and update read status till hit the last read message
-        const updatedMessages = state.messages.map(message => 
-            message.id <= lastReadInfo.last_read_message_id
-                ? { ...message, read: true }
-                : message
+
+        const updatedMessages = messages.map(msg =>
+            msg.id <= lastReadInfo.last_read_message_id
+                ? { ...msg, read: true }
+                : msg
         );
 
-        updateState({ messages: updatedMessages });
-
+        setMessages(updatedMessages);
     }, [lastReadInfo]);
 
     if (!selectedUser) {
@@ -150,7 +139,7 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage, lastRe
         );
     }
 
-    if (state.isLoading) {
+    if (isLoading) {
         return (
             <div className="chat-box d-flex align-items-center justify-content-center">
                 <FaSpinner className="spin-anim" />
@@ -175,12 +164,12 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage, lastRe
             <div className="chat-messages p-3" ref={chatMessagesElem}>
                 <div 
                     className="text-center load-messages-spinner text-muted" 
-                    style={{display: state.nextPageNumber ? 'block' : 'none'}} 
+                    style={{display: nextPageNumber ? 'block' : 'none'}} 
                     ref={loadMessagesSpinner}
                 > 
                     <FaSpinner className="spin-anim" /> 
                 </div>
-                {state.messages.map((message) => (
+                {messages.map((message) => (
                     <MessageCardComponent
                         key={message.id}
                         message={message}
@@ -190,8 +179,8 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage, lastRe
                 ))}
             </div>
             <SendMessageBoxComponent 
-                message={state.message} 
-                setMessage={(msg) => updateState({ message: msg })} 
+                message={message} 
+                setMessage={setMessage} 
                 sendMessage={handleSendMessage} 
             />
         </div>

@@ -15,8 +15,12 @@ const ChatPage = () => {
 
     useEffect(() => {
         const fetchConversations = async () => {
-            const response = await chatsHistory();
-            setUsers(response.results);
+            try {
+                const response = await chatsHistory();
+                setUsers(response.results);
+            } catch (error) {
+                console.error('Error fetching conversations:', error);
+            }
         };
         fetchConversations();
     }, []);
