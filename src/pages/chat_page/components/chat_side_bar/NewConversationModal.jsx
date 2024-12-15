@@ -85,6 +85,7 @@ const NewConversationModal = ({ show, onHide, onStartConversation }) => {
                         >
                             <div className="d-flex align-items-center">
                                 <Image
+                                    className='rounded-circle-50'
                                     src={user.profile_image || defaultAvatar}
                                     roundedCircle
                                     width={40}

@@ -21,7 +21,10 @@ const ChatSideBarComponent = ({ users, onUserSelect, selectedUser, setUsers }) =
                 className="btn btn-outline-dark w-100 my-2"
                 onClick={() => setShowModal(true)}
             >
-                {t('add_new_conversation')} <FaPlus />
+                <span className="hide-on-576">
+                    {t('add_new_conversation')}
+                </span> 
+                <FaPlus />
             </button>
             <ul className="ul-no-bullets p-0 m-0">
                 {users.map((user) => (

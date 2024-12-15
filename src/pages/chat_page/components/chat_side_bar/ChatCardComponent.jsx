@@ -50,12 +50,12 @@ const ChatCardComponent = ({ user, onUserSelect, selectedUser }) => {
                     </div>
                     <div className="flex-grow-1 mx-1">
                         <div className="d-flex justify-content-between align-items-center">
-                            <h5 className="mb-1">{user.first_name}</h5>
-                            <small className="text-muted">
+                            <h5 className="mb-1 hide-on-576">{user.first_name}</h5>
+                            <small className="text-muted hide-on-768">
                                 {formatDate(user.timestamp)}
                             </small>
                         </div>
-                        <p className="mb-0 text-muted">
+                        <p className="mb-0 text-muted hide-on-576">
                             <small>{user.last_message}</small>
                         </p>
                     </div>

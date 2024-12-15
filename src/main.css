@@ -7,3 +7,15 @@
 .Toastify__toast-container {
     z-index: 9999999 !important;
 }
+
+@media (max-width: 768px) {
+    .hide-on-768 {
+        display: none !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .hide-on-576 {
+        display: none !important;
+    }
+}

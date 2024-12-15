@@ -13,15 +13,17 @@ const ChatPage = () => {
     const audioRef = useRef(new Audio(notifSound));
     const [lastReadInfo, setLastReadInfo] = useState(null);
 
+    const fetchConversations = async () => {
+        try {
+            const response = await chatsHistory();
+            const sortedUsers = response.results.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            setUsers(sortedUsers);
+        } catch (error) {
+            console.error('Error fetching conversations:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchConversations = async () => {
-            try {
-                const response = await chatsHistory();
-                setUsers(response.results);
-            } catch (error) {
-                console.error('Error fetching conversations:', error);
-            }
-        };
         fetchConversations();
     }, []);
 
@@ -72,22 +74,29 @@ const ChatPage = () => {
                 console.log('WebSocket new_message received', data);
                 // Update latest message state
                 setLatestMessage(data); 
-                setUsers(prevUsers => {
-                    // Find and update the user that received/sent the message
-                    const updatedUsers = prevUsers.map(user => {
-                        if (user.user_id === data.sender) {
-                            return {
-                                ...user,
-                                last_message: data.message,
-                                timestamp: data.timestamp,
-                                unread_count: user.unread_count + 1
-                            };
-                        }
-                        return user;
+
+                const isSenderInChatHistory = users.some(user => user.user_id === data.sender);
+                if(isSenderInChatHistory) {
+                    setUsers(prevUsers => {
+                        // Find and update the user that received/sent the message
+                        const updatedUsers = prevUsers.map(user => {
+                            if (user.user_id === data.sender) {
+                                return {
+                                    ...user,
+                                    last_message: data.message,
+                                    timestamp: data.timestamp,
+                                    unread_count: user.unread_count + 1
+                                };
+                            }
+                            return user;
+                        });
+                        return updatedUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                     });
-                    // Sort users by timestamp
-                    return updatedUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                });
+                }
+                else {
+                    fetchConversations();
+                }
+
                 try {
                     audioRef.current.play();
                 }
