@@ -163,11 +163,10 @@ const ChatBoxComponent = ({ selectedUser, users, setUsers, latestMessage, lastRe
             </div>
             <div className="chat-messages p-3" ref={chatMessagesElem}>
                 <div 
-                    className="text-center load-messages-spinner text-muted" 
-                    style={{display: nextPageNumber ? 'block' : 'none'}} 
+                    className={"text-center load-messages-spinner text-muted" + (nextPageNumber ? '' : ' d-none')}
                     ref={loadMessagesSpinner}
                 > 
-                    <FaSpinner className="spin-anim" /> 
+                    <FaSpinner className="spin-anim" />
                 </div>
                 {messages.map((message) => (
                     <MessageCardComponent

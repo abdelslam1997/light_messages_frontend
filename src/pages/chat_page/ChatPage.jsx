@@ -9,9 +9,9 @@ const ChatPage = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [users, setUsers] = useState([]);
     const [latestMessage, setLatestMessage] = useState(null);
+    const [lastReadInfo, setLastReadInfo] = useState(null);
     const socketRef = useRef(null);
     const audioRef = useRef(new Audio(notifSound));
-    const [lastReadInfo, setLastReadInfo] = useState(null);
 
     const fetchConversations = async () => {
         try {

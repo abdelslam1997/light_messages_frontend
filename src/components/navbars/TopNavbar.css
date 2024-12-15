@@ -37,7 +37,7 @@
 }
 
 /* Media Query for Mobile Devices */
-@media (max-width: 768px) {
+@media (max-width: 576px) {
     .language-box {
         position: relative !important;
         right: 0 !important;

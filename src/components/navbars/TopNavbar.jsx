@@ -1,5 +1,5 @@
 import { Navbar, Nav, Button, ButtonGroup, TabContainer } from 'react-bootstrap';
-import { FaGlobe, FaHome, FaSignInAlt, FaUser, FaUserPlus } from 'react-icons/fa';
+import { FaGlobe, FaHome, FaSignInAlt, FaSignOutAlt, FaUser, FaUserPlus } from 'react-icons/fa';
 import light_messages from '../../assets/light_messages.png';
 import './TopNavbar.css';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,7 @@ function TopNavbar() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="align-items-center">
+                    <Nav className="align-items-start">
                         {
                             NavLinks()
                         }
@@ -71,10 +71,13 @@ const NavLinks = () => {
                 ) : (
                     <FaUser className="mx-1" />
                 )}
-                {user?.first_name} {user?.last_name}
+                <span className='hide-on-768'>{user?.first_name} {user?.last_name}</span>
+                <span className='only-on-576'>{user?.first_name} {user?.last_name}</span>
             </Nav.Link>
             <Nav.Link onClick={handleLogout} className="mx-2 d-flex align-items-center nav-link-logout">
-                <FaSignInAlt size={18} color='crimson' className="mx-1" /> {t('logout')}
+                <FaSignInAlt size={18} color='crimson' className="mx-1" /> 
+                <span className='hide-on-768'>{t('logout')}</span>
+                <span className='only-on-576'>{t('logout')}</span>
             </Nav.Link>
             </>
         )
@@ -89,7 +92,7 @@ const NavLinks = () => {
                 <FaUserPlus className="me-1" /> {t('register')}
             </Nav.Link>
             <Nav.Link as={Link} to="/login" className="mx-2">
-                <FaSignInAlt className="me-1" /> {t('login')}
+                <FaSignOutAlt className="me-1" /> {t('login')}
             </Nav.Link>
         </>
         );

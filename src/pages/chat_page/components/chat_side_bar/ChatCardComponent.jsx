@@ -38,8 +38,8 @@ const ChatCardComponent = ({ user, onUserSelect, selectedUser }) => {
                         {user.unread_count}
                     </span>
                 )}
-                <Card.Body className="d-flex align-items-center">
-                    <div className="mx-1">
+                <Card.Body className="d-flex align-items-center chat-card-body">
+                    <div className="mx-1 image-container">
                         <img
                             src={user.profile_image || defaultAvatar}
                             alt={`${user.first_name}`}
@@ -48,14 +48,14 @@ const ChatCardComponent = ({ user, onUserSelect, selectedUser }) => {
                             onError={(e) => {e.target.src = defaultAvatar}}
                         />
                     </div>
-                    <div className="flex-grow-1 mx-1">
+                    <div className="flex-grow-1 mx-1 hide-on-576">
                         <div className="d-flex justify-content-between align-items-center">
-                            <h5 className="mb-1 hide-on-576">{user.first_name}</h5>
+                            <h5 className="mb-1">{user.first_name}</h5>
                             <small className="text-muted hide-on-768">
                                 {formatDate(user.timestamp)}
                             </small>
                         </div>
-                        <p className="mb-0 text-muted hide-on-576">
+                        <p className="mb-0 text-muted">
                             <small>{user.last_message}</small>
                         </p>
                     </div>

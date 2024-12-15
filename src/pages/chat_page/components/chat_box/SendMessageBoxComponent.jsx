@@ -16,7 +16,7 @@ const SendMessageBoxComponent = ({ message, setMessage, sendMessage }) => {
                 onKeyDown={(e) => { if (e.key === 'Enter') sendMessage() } }
             />
             <button
-                className="btn btn-sm btn-primary mx-1"
+                className="btn btn-sm btn-dark mx-1"
                 onClick={sendMessage}
             >
                 <FaPaperPlane />

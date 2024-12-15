@@ -27,4 +27,11 @@
     .hover-shadow {
         font-size: 0.9rem !important;
     }
+    .chat-card-body {
+        padding: 0.1rem 0rem !important;
+    }
+    .chat-card-body .image-container {
+        margin: auto !important;
+    }
+
 }

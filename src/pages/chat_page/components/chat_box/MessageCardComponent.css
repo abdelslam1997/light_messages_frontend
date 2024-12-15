@@ -86,3 +86,21 @@
     margin-top: 5px;
     text-align: right;
 }
+
+[dir="rtl"] .message-card.sender {
+    background-color: #dcf8c6;
+    align-self: flex-start;
+    margin-left: 0px;
+}
+
+[dir="rtl"] .sender .message-content {
+    padding: 0px 16px 0px 0px !important;
+}
+
+[dir="rtl"] .receiver .message-content {
+    padding: 0px 16px 0px 0px !important;
+}
+
+[dir="rtl"] .status-icon {
+    margin-right: 10px;
+}

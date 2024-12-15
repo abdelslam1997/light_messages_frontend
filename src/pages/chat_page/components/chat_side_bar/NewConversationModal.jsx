@@ -103,7 +103,7 @@ const NewConversationModal = ({ show, onHide, onStartConversation }) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button 
-                    variant="primary" 
+                    variant="dark" 
                     onClick={handleStartConversation} 
                     disabled={!selectedUser}
                 >

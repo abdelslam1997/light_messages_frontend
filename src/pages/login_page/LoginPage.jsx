@@ -2,7 +2,7 @@ import { Container } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
 import { loginUser } from "../../services/authService";
 import { useState } from "react";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaJoint, FaLock, FaSign, FaSignInAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../contexts/UserContext';
@@ -65,7 +65,7 @@ const LoginPage = () => {
                 </div>
                 {/* Error Section */}
                 <div className="d-grid gap-2">
-                    <button type="submit" className="btn btn-primary">{t('login')}</button>
+                    <button type="submit" className="btn btn-dark"><FaSignInAlt /> {t('login')}</button>
                 </div>
             </form>
         </Container>

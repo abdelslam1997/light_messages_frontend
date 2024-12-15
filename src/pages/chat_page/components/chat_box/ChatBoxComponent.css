@@ -45,8 +45,9 @@
 
 @media (max-width: 576px) {
     .chat-box {
-        max-width: 100% !important;
-        flex: 1 1 100% !important;
+        max-width: 80% !important;
+        flex: 1 1 80% !important;
+        min-width: 80% !important;
     }   
     
 }

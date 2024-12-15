@@ -165,7 +165,7 @@ const RegisterPage = () => {
 
                 <button 
                     type="submit" 
-                    className="btn btn-primary mt-3" 
+                    className="btn btn-dark mt-3" 
                     disabled={isSubmitting}
                 >
                     <FaPaperPlane /> {isSubmitting ? t('registering...') : t('register')}
