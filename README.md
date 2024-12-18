@@ -1,15 +1,54 @@
-# React + Vite
+# Light Messages Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application frontend designed to serve [Light Messages Backend](https://github.com/abdelslam1997/light_messages_backend).
 
-Currently, two official plugins are available:
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Environment Configuration](#environment-configuration)
+- [Development](#development)
+- [Production Build](#production-build)
+- [License](#license)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prerequisites
 
+Before you begin, ensure you have installed:
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
 
-## Env Files
-Create ".env.development" and ".env.production" files in the root directory to set environment variables. 
-* Look at ".env.example" for an example.
-* Access env in js ex. "const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-"
+## Installation
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/abdelslam1997/light_messages_frontend.git
+    cd light_messages_frontend
+    npm install
+    ```
+
+## Environment Configuration
+
+Create a `.env` file in the project root and configure:
+```bash
+REACT_APP_API_BASE_URL=http://light-messages.local/api/v1
+REACT_APP_WEBSOCKET_URL=ws://light-messages.local/ws
+```
+> Note: Replace `light-messages.local` with your backend URL
+
+## Development
+
+Start the development server:
+```bash
+npm run dev
+```
+Access the application at `http://localhost:5173`
+
+## Production Build
+
+Create a production build:
+```bash
+npm run build
+```
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
