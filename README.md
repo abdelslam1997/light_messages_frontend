@@ -13,10 +13,9 @@ A web application frontend designed to serve [Light Messages Backend](https://gi
 
 ## Preview Images
 
-![image](https://imgur.com/I2brHA5)
-![image](https://imgur.com/ldDSN7Z)
-
-![image](https://imgur.com/HHNoflt)
+![image](./imgs/light_messages_003.png)
+![image](./imgs/light_messages_005.png)
+![image](./imgs/light_messages_006.png)
 
 ## Prerequisites
 
