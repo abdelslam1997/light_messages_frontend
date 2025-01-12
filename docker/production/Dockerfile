@@ -15,6 +15,11 @@ RUN npm ci
 # Copy the rest of your files
 COPY . .
 
+# Set environment variables for the build (Replace with your own host)
+ENV REACT_APP_API_BASE_URL=http://k8s-ingress-external-9a3bc43ef0-48d9d81af72bfdf1.elb.eu-west-2.amazonaws.com/api/v1
+ENV REACT_APP_WEBSOCKET_URL=ws://k8s-ingress-external-9a3bc43ef0-48d9d81af72bfdf1.elb.eu-west-2.amazonaws.com/ws
+ENV NODE_ENV=production
+
 # Build your production bundle
 RUN npm run build
 
