@@ -51,9 +51,33 @@ Access the application at `http://localhost:5173`
 
 ## Production Build
 
-Create a production build:
+### Docker Build
+Build and run using Docker:
 ```bash
-npm run build
+# Build the image
+docker build -f docker/production/Dockerfile -t light_messages_frontend:latest .
+
+# Run the container
+docker run -p 80:80 light_messages_frontend:latest
+```
+
+### Environment Variables
+The production build uses these environment variables:
+```bash
+REACT_APP_API_BASE_URL=http://your-api-domain/api/v1
+REACT_APP_WEBSOCKET_URL=ws://your-api-domain/ws
+```
+
+### Continuous Integration
+The project uses GitHub Actions for automated builds:
+- Triggers on pushes to main branch with commit message containing 'build-docker-image'
+- Builds and pushes to Docker Hub as `abdelslam1997/light_messages_frontend`
+- Tags: `latest` and `v1.0.x`
+
+To trigger a build:
+```bash
+git commit -m "your changes [build-docker-image]"
+git push origin main
 ```
 
 ## License
